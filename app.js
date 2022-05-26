@@ -15,11 +15,7 @@ const itemsSchema = {
 
 const Item = mongoose.model("Item", itemsSchema);
 
-const item1 = new Item({name: "Buy Food"});
-const item2 = new Item({name: "Cook Food"});
-const item3 = new Item({name: "Eat Food"});
-
-const defaultItems = [item1, item2, item3];
+const defaultItem = new Item({name: "Drink Enough Water!"});
 
 const listSchema = {
     name: String,
@@ -33,7 +29,7 @@ app.get("/", function(req,res){
     Item.find(function(err, items){
         
         if (items.length === 0){
-            Item.insertMany(defaultItems, function(err){
+            Item.insertMany([defaultItem], function(err){
                 if(err) {
                     console.log(err)
                 } else {
@@ -44,7 +40,6 @@ app.get("/", function(req,res){
         } else {
             res.render("list", {listTitle: "Today", newListItems: items});
         }
-
     });
 });
 
@@ -57,10 +52,12 @@ app.get("/:customListName", function(req, res){   // Custom Lists using Express 
                 // Create a new List
                 const list = new List({
                     name: customListName,
-                    items: defaultItems
+                    items: [defaultItem]
                 });
                 list.save(function(err, result){
-                    res.redirect("/"+customListName);
+                    if(!err) {
+                        res.redirect("/"+customListName);
+                    }           
                 }); 
 
             } else {
@@ -113,11 +110,11 @@ app.post("/delete", function(req, res){
     }
 });
 
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 3000;
-}
+// let port = process.env.PORT;
+// if (port == null || port == "") {
+//   port = 3000;
+// }
 
-app.listen(port, function(){
+app.listen(3000, function(){
     console.log("Server is up and running successfully.");
 });

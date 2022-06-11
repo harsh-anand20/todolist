@@ -1,3 +1,3 @@
 Todolist Web Application
 
-Technologies used: EJS, NodeJS, Express
+Technologies used: JavaScript, EJS, CSS, NodeJS, Express
